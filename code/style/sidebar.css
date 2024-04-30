@@ -1,0 +1,44 @@
+.sidebar {
+    height: 100%;
+    width: 48px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    color: #ffffff;
+    background-color: #0c0c0c;
+    transition: width 0.15s ease; /* 添加过渡效果 */
+    overflow-x: hidden;
+}
+.ColorChooser {
+    width: 300px;
+    height: 26px;
+    padding-left: 48px;
+    overflow-x: hidden;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    transition: height 0.15s ease; /* 添加过渡效果 */
+}
+
+.saveimgsidebar {
+    height: 100%;
+    width: 0px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    color: #ffffff;
+    background-color: #064e87;
+    transition: width 0.13s ease; /* 添加过渡效果 */
+    overflow-x: hidden;
+}
+
+.alertsSidebar {
+    height: 100%;
+    width: 0px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    color: #ffffff;
+    background-color: #870606;
+    transition: width 0.13s ease; /* 添加过渡效果 */
+    overflow-x: hidden;
+}

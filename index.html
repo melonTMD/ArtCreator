@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Creator</title>
+    <link rel="stylesheet" type="text/css" href="code/style/btns.css">
+    <link rel="stylesheet" type="text/css" href="code/style/sidebar.css">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <style>
+        body {
+            background-image: url('img/background.jpg');
+            background-size: cover; 
+            background-position: center; 
+            user-select: none;
+        }
+        .input {
+            width: 300px;
+            font-size: 20px;
+            background-color: #f1f1f1;
+            color: black;
+            text-align: left; /* 按钮文本居左 */
+            border: none;
+            padding: 10px 15px;
+        }
+        /* 按钮悬停样式 */
+        .input:hover {
+            background-color: #f1f1f1;
+        }
+
+        .sidebarthings {
+            height: 100%;
+            width: 300px;
+            top: 0;
+            left: 0;
+            overflow-x: hidden;
+        }
+
+        canvas {
+            background-image: url('img/bg.png'); 
+            background-size: 16px 16px;
+            box-shadow: 0px 0px 10px #000000; 
+            background-color: #ffffff00;
+            display: block;
+            margin: 0 auto;
+            border: none;
+            cursor: url('img/pen.png') 16 16, auto; /* 将鼠标指针设置为十字线样式 */
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+    <div class="sidebar" id="sidebar">
+        <div class="sidebarthings">
+            <button class="openbtn" onclick="toggleSidebar()">☰.&nbsp;&nbsp;设置</button>
+            <div class="ColorChooser" id="ColorChooser">
+                <label for="red" style="color: rgb(255, 0, 0);">红色：</label>
+                <input type="range" id="red" min="0" max="255" value="90"><br>
+                <label for="green" style="color: rgb(0, 255, 0);">绿色：</label>
+                <input type="range" id="green" min="0" max="255" value="0"><br>
+                <label for="blue" style="color: rgb(0, 0, 255);">蓝色：</label>
+                <input type="range" id="blue" min="0" max="255" value="0"><br>
+                <label for="pencilSize">粗细：</label>
+                <input type="range" id="pencilSize" min="1" max="100" value="2">
+            </div>
+            <button class="saveimgbtn" onclick="togglesaveimgSidebar()"><img src="img/icon/saveimg.png" style="height: 16px;">.&nbsp;&nbsp;保存</button>
+            <button class="clearcanvasbtn" onclick="togglealertsSidebar()"><img src="img/icon/dustbin.png" style="height: 16px;">.&nbsp;&nbsp;清除画布</button>
+
+            <button class="openbtn" onclick="changeCanvasSize()">⊞.&nbsp;&nbsp;修改画布大小</button>
+
+            <button class="openbtn" onclick="choosetool('RedMarker')"><img src="img/icon/RedMarker.png" style="height: 16px;">.&nbsp;&nbsp;红色马克笔</button>
+            <button class="openbtn" onclick="choosetool('pencil')"><img src="img/icon/pencil.png" style="height: 16px;">.&nbsp;&nbsp;铅笔</button>
+            <button class="openbtn" onclick="choosetool('eraser')"><img src="img/icon/eraser.png" style="height: 16px;">.&nbsp;&nbsp;修改带</button>
+        </div>
+    </div>
+
+    <div class="saveimgsidebar" id="saveimgsidebar">
+        <div class="sidebarthings">
+            <p>&nbsp;&nbsp;&nbsp;⦿&nbsp;保存您的艺术</p>
+            <button class="saveimgbtn" onclick="togglesaveimgSidebar()">◄.&nbsp;&nbsp;返回</button>
+            <input class="input" id="FileName" placeholder="文件名">
+            <button class="saveimgbtn" onclick="saveimg(),togglesaveimgSidebar()" style="bottom: 45px;"><img src="img/icon/saveimg.png" style="height: 16px;">.&nbsp;&nbsp;保存图像</button>
+            <select id="formatSelect" class="saveimgbtnup">
+                <option value="png">PNG</option>
+                <option value="jpg">JPG</option>
+                <option value="gif">GIF</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="alertsSidebar" id="alertsSidebar">
+        <div class="sidebarthings">
+            <p>&nbsp;&nbsp;&nbsp;⦿&nbsp;你确定吗</p>
+            <button class="clearcanvasbtn" onclick="clearCanvas(),togglealertsSidebar()"><img src="img/icon/dustbin.png" style="height: 16px;">.&nbsp;&nbsp;确定</button>
+            <button class="saveimgbtn" onclick="togglealertsSidebar()">◄.&nbsp;&nbsp;取消</button>
+        </div>
+    </div>
+
+    <canvas id="canvas" width="800" height="600"></canvas>
+
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            if (sidebar.style.width === "300px") {
+                sidebar.style.width = "48px";
+            } else {
+                sidebar.style.width = "300px";
+            }
+
+            var sidebar = document.getElementById("ColorChooser");
+            if (sidebar.style.height === "90px") {
+                sidebar.style.height = "26px";
+            } else {
+                sidebar.style.height = "90px";
+            }
+        }
+
+        function togglesaveimgSidebar() {
+            var sidebar = document.getElementById("saveimgsidebar");
+            if (sidebar.style.width === "300px") {
+                sidebar.style.width = "0px";
+            } else {
+                sidebar.style.width = "300px";
+            }
+        }
+
+        function togglealertsSidebar() {
+            var sidebar = document.getElementById("alertsSidebar");
+            if (sidebar.style.width === "300px") {
+                sidebar.style.width = "0px";
+            } else {
+                sidebar.style.width = "300px";
+            }
+        }
+
+        function clearCanvas() {
+            var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function choosetool(tool) {
+            // 根据所选工具设置默认颜色
+            if (tool === 'RedMarker') {
+                document.getElementById("red").value = "200";
+                document.getElementById("green").value = "0";
+                document.getElementById("blue").value = "0";
+                document.getElementById("pencilSize").value = "3";
+            }else if (tool === 'pencil') {
+                document.getElementById("red").value = "0";
+                document.getElementById("green").value = "0";
+                document.getElementById("blue").value = "0";
+                document.getElementById("pencilSize").value = "1";
+            } else {
+                document.getElementById("red").value = "255";
+                document.getElementById("green").value = "255";
+                document.getElementById("blue").value = "255";
+                document.getElementById("pencilSize").value = "10";
+            }
+            // 更新画笔颜色和颜色选择器背景色
+            updateColor();
+        }
+
+
+        var divElement = document.getElementById("ColorChooser");
+        divElement.style.backgroundColor = `rgb( 90 , 0 , 0 )`;
+        // 获取 canvas 元素
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+
+        // 设置初始状态
+        var isDrawing = false; // 是否正在绘制
+        var lastX = 0; // 上一个点的横坐标
+        var lastY = 0; // 上一个点的纵坐标
+
+        // 监听颜色滑动条变化
+        document.querySelectorAll("input[type=range]").forEach(function(input) {
+            input.addEventListener("input", updateColor);
+        });
+
+        // 更新颜色
+        function updateColor() {
+            var red = document.getElementById("red").value;
+            var green = document.getElementById("green").value;
+            var blue = document.getElementById("blue").value;
+            var pencilSize = document.getElementById("pencilSize").value;
+            ctx.strokeStyle = `rgb(${red}, ${green}, ${blue})`;
+            ctx.lineWidth = pencilSize;
+            divElement.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+        }
+
+        // 初始化颜色和铅笔粗细
+        updateColor();
+
+        // 监听鼠标按下事件
+        canvas.addEventListener("mousedown", function(e) {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX, e.offsetY]; // 记录当前坐标作为上一个点的坐标
+        });
+
+        // 监听鼠标移动事件
+        canvas.addEventListener("mousemove", function(e) {
+            if (!isDrawing) return; // 如果不是在绘制状态则直接返回
+
+            // 绘制路径
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY); // 将画笔移动到上一个点的位置
+            ctx.lineTo(e.offsetX, e.offsetY); // 绘制直线到当前点的位置
+            ctx.stroke(); // 绘制路径
+            [lastX, lastY] = [e.offsetX, e.offsetY]; // 更新上一个点的坐标为当前点的坐标
+        });
+
+        // 监听鼠标松开事件
+        canvas.addEventListener("mouseup", function() {
+            isDrawing = false;
+        });
+
+        // 监听鼠标离开画布事件
+        canvas.addEventListener("mouseleave", function() {
+            isDrawing = false;
+        });
+
+        function saveimg() {
+            // 获取 canvas 元素
+            var canvas = document.getElementById("canvas");
+
+            // 获取文件名输入框中的文件名
+            var fileName = document.getElementById("FileName").value;
+
+            // 获取下拉菜单中选择的格式
+            var format = document.getElementById("formatSelect").value;
+
+            // 检查文件名是否为空
+            if (fileName.trim() === "") {
+                // 如果文件名为空，设置默认文件名
+                fileName = "Untitled";
+            }
+
+            // 将 canvas 内容转换为数据 URL
+            var imgData = canvas.toDataURL("image/" + format);
+
+            // 创建一个链接元素
+            var link = document.createElement('a');
+
+            // 将数据 URL 赋给链接的 href 属性
+            link.href = imgData;
+
+            // 设置下载文件的名称为文件名加上文件格式
+            link.download = fileName + '.' + format;
+
+            // 模拟点击链接以下载图像
+            link.click();
+        }
+
+        function changeCanvasSize() {
+            var newWidth = prompt("输入新的画布宽度（单位：像素）：", "800");
+            var newHeight = prompt("输入新的画布高度（单位：像素）：", "600");
+
+            if (newWidth && newHeight) {
+        var canvas = document.getElementById("canvas");
+        canvas.width = parseInt(newWidth);
+        canvas.height = parseInt(newHeight);
+            }
+        }
+    </script>
+</body>
+</html>
