@@ -15,12 +15,12 @@
             user-select: none;
         }
         .input {
-            width: 300px;
+            width: 268px;
             font-size: 20px;
             background-color: #f1f1f1;
             color: black;
             text-align: left; /* 按钮文本居左 */
-            border: none;
+            border: 1px solid #bbbbbb;
             padding: 10px 15px;
             outline: none;
         }
@@ -66,11 +66,21 @@
             <button class="saveimgbtn" onclick="togglesaveimgSidebar()"><img src="img/icon/saveimg.png" style="height: 16px;">.&nbsp;&nbsp;保存</button>
             <button class="clearcanvasbtn" onclick="togglealertsSidebar()"><img src="img/icon/dustbin.png" style="height: 16px;">.&nbsp;&nbsp;清除画布</button>
 
-            <button class="openbtn" onclick="changeCanvasSize()">⊞.&nbsp;&nbsp;修改画布大小</button>
+            <button class="openbtn" onclick="toggleChangeCanvasSizeSidebar()">⊞.&nbsp;&nbsp;修改画布大小</button>
 
             <button class="openbtn" onclick="choosetool('RedMarker')"><img src="img/icon/RedMarker.png" style="height: 16px;">.&nbsp;&nbsp;红色马克笔</button>
             <button class="openbtn" onclick="choosetool('pencil')"><img src="img/icon/pencil.png" style="height: 16px;">.&nbsp;&nbsp;铅笔</button>
             <button class="openbtn" onclick="choosetool('eraser')"><img src="img/icon/eraser.png" style="height: 16px;">.&nbsp;&nbsp;修改带</button>
+        </div>
+    </div>
+
+    <div class="saveimgsidebar" id="ChangeCanvasSizeSidebar">
+        <div class="sidebarthings">
+            <p>&nbsp;&nbsp;&nbsp;⦿&nbsp;修改画布大小</p>
+            <button class="saveimgbtn" onclick="toggleChangeCanvasSizeSidebar()">◄.&nbsp;&nbsp;返回</button>
+            <button class="saveimgbtn" onclick="changeCanvasSize(),toggleChangeCanvasSizeSidebar()" style="bottom: 45px;">⊞.&nbsp;&nbsp;修改画布大小</button>
+            <input class="input" id="newWidth" placeholder="调整宽(px)">
+            <input class="input" id="newHeight" placeholder="调整高(px)">
         </div>
     </div>
 
@@ -117,6 +127,15 @@
 
         function togglesaveimgSidebar() {
             var sidebar = document.getElementById("saveimgsidebar");
+            if (sidebar.style.width === "300px") {
+                sidebar.style.width = "0px";
+            } else {
+                sidebar.style.width = "300px";
+            }
+        }
+
+        function toggleChangeCanvasSizeSidebar() {
+            var sidebar = document.getElementById("ChangeCanvasSizeSidebar");
             if (sidebar.style.width === "300px") {
                 sidebar.style.width = "0px";
             } else {
@@ -253,15 +272,20 @@
         }
 
         function changeCanvasSize() {
-            var newWidth = prompt("输入新的画布宽度（单位：像素）：", "800");
-            var newHeight = prompt("输入新的画布高度（单位：像素）：", "600");
+            var newWidth = document.getElementById("newWidth").value; // 从输入框获取新宽度
+            var newHeight = document.getElementById("newHeight").value; // 从输入框获取新高度
 
-            if (newWidth && newHeight) {
-        var canvas = document.getElementById("canvas");
-        canvas.width = parseInt(newWidth);
-        canvas.height = parseInt(newHeight);
+            if (newWidth.trim() === "") {
+                newWidth = "800"; // 如果宽度为空，则设置默认值为 800
             }
-        }
+            if (newHeight.trim() === "") {
+                newHeight = "600"; // 如果高度为空，则设置默认值为 600
+            }
+
+            var canvas = document.getElementById("canvas"); // 获取 canvas 元素
+                canvas.width = parseInt(newWidth); // 设置新宽度
+                canvas.height = parseInt(newHeight); // 设置新高度
+            }
     </script>
 </body>
 </html>
