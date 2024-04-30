@@ -66,6 +66,12 @@
             <button class="saveimgbtn" onclick="togglesaveimgSidebar()"><img src="img/icon/saveimg.png" style="height: 16px;">.&nbsp;&nbsp;保存</button>
             <button class="clearcanvasbtn" onclick="togglealertsSidebar()"><img src="img/icon/dustbin.png" style="height: 16px;">.&nbsp;&nbsp;清除画布</button>
 
+            <input type="file" id="imgInput" style="display: none;" accept="image/*"  id="imageUpload" onchange="handleImageUpload(event)">
+            <button class="saveimgbtn" onclick="document.getElementById('imgInput').click();" style="bottom: 45px;"><img src="img/icon/loadimg.png" style="height: 16px;">.&nbsp;&nbsp;导入图像</button>
+
+            <button class="openbtn" onclick="undo()">◁ .&nbsp;&nbsp;撤销</button>
+            <button class="openbtn" onclick="redo()">▷ .&nbsp;&nbsp;重做</button>
+
             <button class="openbtn" onclick="toggleChangeCanvasSizeSidebar()">⊞.&nbsp;&nbsp;修改画布大小</button>
 
             <button class="openbtn" onclick="choosetool('RedMarker')"><img src="img/icon/RedMarker.png" style="height: 16px;">.&nbsp;&nbsp;红色马克笔</button>
@@ -101,7 +107,7 @@
     <div class="alertsSidebar" id="alertsSidebar">
         <div class="sidebarthings">
             <p>&nbsp;&nbsp;&nbsp;⦿&nbsp;你确定吗</p>
-            <button class="clearcanvasbtn" onclick="clearCanvas(),togglealertsSidebar()"><img src="img/icon/dustbin.png" style="height: 16px;">.&nbsp;&nbsp;确定</button>
+            <button class="clearcanvasbtn" onclick="clearCanvas(),togglealertsSidebar()" style="bottom: 45px;"><img src="img/icon/dustbin.png" style="height: 16px;">.&nbsp;&nbsp;确定</button>
             <button class="saveimgbtn" onclick="togglealertsSidebar()">◄.&nbsp;&nbsp;取消</button>
         </div>
     </div>
@@ -271,21 +277,104 @@
             link.click();
         }
 
+        // 定义用于保存绘图历史记录的栈
+        var undoStack = [];
+        var redoStack = [];
+
+        // 监听鼠标按下事件
+        canvas.addEventListener("mousedown", function(e) {
+            // 将绘图操作保存到历史记录中
+            saveToHistory();
+        });
+
+        // 保存绘图操作到历史记录
+        function saveToHistory() {
+            // 获取当前画布内容
+            var canvasData = canvas.toDataURL();
+            // 将当前画布内容保存到历史记录中
+            undoStack.push(canvasData);
+            // 清空重做栈
+            redoStack = [];
+        }
+
+        // 撤销操作
+        function undo() {
+            if (undoStack.length > 1) {
+                // 将当前画布内容保存到重做栈中
+                redoStack.push(undoStack.pop());
+                // 恢复到上一个历史记录状态
+                var canvasData = undoStack[undoStack.length - 1];
+                var img = new Image();
+                img.src = canvasData;
+                img.onload = function() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                };
+            }
+        }
+
+        // 重做操作
+        function redo() {
+            if (redoStack.length > 0) {
+                // 将当前画布内容保存到历史记录中
+                undoStack.push(redoStack.pop());
+                // 恢复到下一个历史记录状态
+                var canvasData = undoStack[undoStack.length - 1];
+                var img = new Image();
+                img.src = canvasData;
+                img.onload = function() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                };
+            }
+        }
+        // 监听撤销操作（例如按下 Ctrl+Z）
+        document.addEventListener("keydown", function(event) {
+            if (event.ctrlKey && event.key === "z") {
+                undo();
+            }
+        });
+
+
         function changeCanvasSize() {
             var newWidth = document.getElementById("newWidth").value; // 从输入框获取新宽度
             var newHeight = document.getElementById("newHeight").value; // 从输入框获取新高度
 
             if (newWidth.trim() === "") {
-                newWidth = "800"; // 如果宽度为空，则设置默认值为 800
+                newWidth = "800";
             }
             if (newHeight.trim() === "") {
-                newHeight = "600"; // 如果高度为空，则设置默认值为 600
+                newHeight = "600";
             }
 
-            var canvas = document.getElementById("canvas"); // 获取 canvas 元素
-                canvas.width = parseInt(newWidth); // 设置新宽度
-                canvas.height = parseInt(newHeight); // 设置新高度
+            if (newWidth && newHeight) {
+                // 获取当前画布内容
+                var canvas = document.getElementById("canvas");
+                var ctx = canvas.getContext("2d");
+                var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+                // 修改画布大小
+                canvas.width = parseInt(newWidth);
+                canvas.height = parseInt(newHeight);
+
+                // 重新绘制之前保存的内容
+                ctx.putImageData(imageData, 0, 0);
             }
+        }
+
+        function handleImageUpload(event) {
+            var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext("2d");
+            var img = new Image();
+    
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+            };
+    
+            img.src = URL.createObjectURL(event.target.files[0]);
+        }
     </script>
 </body>
 </html>
