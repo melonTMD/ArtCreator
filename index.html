@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Art Creator</title>
+    <title>艺术创建者</title>
     <link rel="stylesheet" type="text/css" href="code/style/btns.css">
     <link rel="stylesheet" type="text/css" href="code/style/sidebar.css">
     <link rel="icon" type="image/png" href="img/favicon.png">
@@ -30,6 +30,15 @@
         }
 
         .sidebarthings {
+            height: 100%;
+            width: 300px;
+            top: 0;
+            left: 0;
+            overflow-x: hidden;
+        }
+
+        .layersidebarthings {
+            float: right;
             height: 100%;
             width: 300px;
             top: 0;
@@ -76,6 +85,7 @@
 
             <input type="file" id="imgInput" style="display: none;" accept="image/*"  id="imageUpload" onchange="handleImageUpload(event)">
             <button class="saveimgbtn" onclick="document.getElementById('imgInput').click();" style="bottom: 45px;"><img src="img/icon/loadimg.png" style="height: 16px;">.&nbsp;&nbsp;导入图像</button>
+            <button class="QuestionHelperBtn" onclick="toggleQuestionHelperSidebar()" style="bottom: 135px;"><img src="img/icon/QuestionHelper.png" style="height: 16px;">.&nbsp;&nbsp;问题助手</button>
 
             <button class="openbtn" onclick="undo()">◁ .&nbsp;&nbsp;撤销</button>
             <button class="openbtn" onclick="redo()">▷ .&nbsp;&nbsp;重做</button>
@@ -98,6 +108,19 @@
         </div>
     </div>
 
+    <div class="saveimgsidebar" id="QuestionHelperSidebar">
+        <div class="sidebarthings">
+            <p>&nbsp;&nbsp;&nbsp;⦿&nbsp;问题助手</p>
+            <p>&nbsp;&nbsp;撤销:&nbsp;Ctrl+Z/ArrowLeft</p>
+            <p>&nbsp;&nbsp;重做:&nbsp;Ctrl+Z/ArrowRight</p>
+            <p>&nbsp;&nbsp;红色马克笔:&nbsp;Ctrl+R</p>
+            <p>&nbsp;&nbsp;铅笔:&nbsp;Ctrl+P</p>
+            <p>&nbsp;&nbsp;橡皮擦:&nbsp;Ctrl+E</p>
+            <p>&nbsp;&nbsp;保存:&nbsp;Ctrl+S</p>
+            <button class="saveimgbtn" onclick="toggleQuestionHelperSidebar()">◄.&nbsp;&nbsp;返回</button>
+        </div>
+    </div>
+
     <div class="saveimgsidebar" id="saveimgsidebar">
         <div class="sidebarthings">
             <p>&nbsp;&nbsp;&nbsp;⦿&nbsp;保存您的艺术</p>
@@ -105,9 +128,12 @@
             <input class="input" id="FileName" placeholder="文件名">
             <button class="saveimgbtn" onclick="saveimg(),togglesaveimgSidebar()" style="bottom: 45px;"><img src="img/icon/saveimg.png" style="height: 16px;">.&nbsp;&nbsp;保存图像</button>
             <select id="formatSelect" class="saveimgbtnup">
-                <option value="png">PNG</option>
-                <option value="jpg">JPG</option>
-                <option value="gif">GIF</option>
+                <option value="bmp">BMP&nbsp;(Windows 位图图像)</option>
+                <option value="ico">ICO&nbsp;(图标)</option>
+                <option value="jpg">JPG&nbsp;(JPEG 图像)</option>
+                <option value="png">PNG&nbsp;(PNG 图像)</option>
+                <option value="webp">WEBP&nbsp;(网页图像)</option>
+                <option value="gif">GIF&nbsp;(动态图像)</option>
             </select>
         </div>
     </div>
@@ -122,7 +148,33 @@
 
     <canvas id="canvas" width="800" height="600"></canvas>
 
+    <div class="Rightsidebar" id="Rightsidebar">
+        <div class="layersidebarthings">
+            <button class="Rightsidebarbtn" onclick="toggleRightsidebar()">绘制助手&nbsp;&nbsp;.☰</button>
+            <p id="whatisayed"></p>
+            <input class="input" id="Question" placeholder="搜索" style="position: absolute; bottom: 0;">
+        </div>
+    </div>
+
     <script>
+        function toggleQuestionHelperSidebar() {
+            var sidebar = document.getElementById("QuestionHelperSidebar");
+            if (sidebar.style.width === "300px") {
+                sidebar.style.width = "0px";
+            } else {
+                sidebar.style.width = "300px";
+            }
+        }
+
+        function toggleRightsidebar() {
+            var sidebar = document.getElementById("Rightsidebar");
+            if (sidebar.style.width === "300px") {
+                sidebar.style.width = "48px";
+            } else {
+                sidebar.style.width = "300px";
+            }
+        }
+
         function toggleSidebar() {
             var sidebar = document.getElementById("sidebar");
             if (sidebar.style.width === "300px") {
@@ -345,13 +397,6 @@
                 };
             }
         }
-        // 监听撤销操作（例如按下 Ctrl+Z）
-        document.addEventListener("keydown", function(event) {
-            if (event.ctrlKey && event.key === "z") {
-                undo();
-            }
-        });
-
 
         function changeCanvasSize() {
             var newWidth = document.getElementById("newWidth").value; // 从输入框获取新宽度
@@ -392,6 +437,161 @@
     
             img.src = URL.createObjectURL(event.target.files[0]);
         }
+
+
+
+
+
+        // 监听撤销操作（例如按下 Ctrl+Z）
+        document.addEventListener("keydown", function(event) {
+            if ((event.ctrlKey && event.key === "z") || (event.ctrlKey && event.key === "ArrowLeft")) {
+                undo();
+            }
+        });
+
+        document.addEventListener("keydown", function(event) {
+            if ((event.ctrlKey && event.key === "r") || (event.ctrlKey && event.key === "ArrowLeft")) {
+                redo();
+            }
+        });
+
+        document.addEventListener("keydown", function(event) {
+            if (event.ctrlKey && event.key === "m") {
+                choosetool('RedMarker');
+            }
+        });
+
+        document.addEventListener("keydown", function(event) {
+            if (event.ctrlKey && event.key === "p") {
+                choosetool('pencil');
+            }
+        });
+
+        document.addEventListener("keydown", function(event) {
+            if (event.ctrlKey && event.key === "e") {
+                choosetool('eraser');
+            }
+        });
+
+        document.addEventListener("keydown", function(event) {
+            if (event.ctrlKey && event.key === "s") {
+                togglesaveimgSidebar();
+            }
+        });
+
+
+
+
+        
+// 绘制助手
+window.onload = function() {
+    toggleRightsidebar();
+    saytouser("你好，我是绘制助手，你可以问我任何事！");
+};
+
+function saytouser(text) {
+    // 获取带有 id 为 "whatisayed" 的元素
+    var element = document.getElementById("whatisayed");
+
+    // 设置初始索引值
+    var index = 0;
+
+    // 每隔一定时间逐字显示文本
+    var intervalId = setInterval(function() {
+        // 检查是否已经显示完所有文本
+        if (index < text.length) {
+            // 逐字添加文本内容
+            element.textContent += text[index];
+            // 增加索引以显示下一个字符
+            index++;
+        } else {
+            // 如果已经显示完所有文本，则清除定时器
+            clearInterval(intervalId);
+        }
+    }, 50); // 每隔50毫秒显示一个字符
+}
+
+var element = document.getElementById("whatisayed");
+var inputElement = document.getElementById("Question");
+
+// 当用户在输入框中按下回车键时触发事件
+inputElement.addEventListener("keydown", function(event) {
+    // 检查是否按下的是回车键
+    if (event.key === "Enter") {
+        // 获取输入的问题
+        var question = inputElement.value;
+        // 清空输入框
+        inputElement.value = "";
+        // 处理问题并显示答案
+        handleQuestion(question);
+    }
+});
+
+function generateAnswer(question) {
+    // 简单示例：根据问题返回一个固定的答案
+    if (question.includes("天气")) {
+        return "今天天气晴，气温适中。";
+    } else
+
+    if (["清除画布", "画布清除"].some(word => question.includes(word))) {
+        clearCanvas()
+        return "看左边";
+    } else
+
+    if (["调整画布", "画布大小"].some(word => question.includes(word))) {
+        toggleChangeCanvasSizeSidebar()
+        return "看左边";
+    } else
+
+    if (["帮", "我"].some(word => question.includes(word))) {
+        return "我不会，我只会出建议";
+    } else
+
+    if (question.includes("画")) {
+        return "你可以尝试以下一些内容：飞机、汽车、山水画、窗户外面、城市、农村、风景";
+    } else
+
+    if (question.includes("你好")) {
+        return "你好";
+    } else 
+
+    if (question.includes("啊")) {
+        return "啊";
+    } else 
+
+    if (question.includes("html")) {
+        return "不会";
+    } else 
+
+    if (question.includes("再见")) {
+        toggleRightsidebar()
+        return "再见";
+    } else 
+
+    if (question.includes("快捷方式")) {
+        toggleQuestionHelperSidebar()
+        return "看左边";
+    } else 
+
+    if (question.includes("时间")) {
+        var now = new Date();
+        return "现在是" + now.getHours() + "点" + now.getMinutes() + "分。";
+    } else {
+        return "抱歉，我还不理解您的问题。";
+    }
+}
+
+// 处理问题并显示答案的函数
+function handleQuestion(question) {
+    // 清空先前显示的内容
+    element.innerHTML = "";
+    // 获取答案并显示
+    var answer = generateAnswer(question);
+    // 显示答案
+    saytouser(answer)
+
+    inputElement.value = "";
+}
     </script>
 </body>
 </html>
