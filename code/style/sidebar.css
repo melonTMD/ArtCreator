@@ -42,3 +42,15 @@
     transition: width 0.13s ease; /* 添加过渡效果 */
     overflow-x: hidden;
 }
+
+.Rightsidebar {
+    height: 100%;
+    width: 48px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    color: #ffffff;
+    background-color: #0c0c0c;
+    transition: width 0.15s ease; /* 添加过渡效果 */
+    overflow-x: hidden;
+}
