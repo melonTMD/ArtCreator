@@ -53,15 +53,23 @@
     <div class="sidebar" id="sidebar">
         <div class="sidebarthings">
             <button class="openbtn" onclick="toggleSidebar()">☰.&nbsp;&nbsp;设置</button>
-            <div class="ColorChooser" id="ColorChooser">
-                <label for="red" style="color: rgb(255, 0, 0);">红色：</label>
-                <input type="range" id="red" min="0" max="255" value="90"><br>
-                <label for="green" style="color: rgb(0, 255, 0);">绿色：</label>
-                <input type="range" id="green" min="0" max="255" value="0"><br>
-                <label for="blue" style="color: rgb(0, 0, 255);">蓝色：</label>
-                <input type="range" id="blue" min="0" max="255" value="0"><br>
-                <label for="pencilSize">粗细：</label>
-                <input type="range" id="pencilSize" min="1" max="100" value="2">
+            <div style="background-image: url('img/bg.png'); background-size: 16px 16px;">
+                <div class="ColorChooser" id="ColorChooser">
+                    <label for="red" style="color: rgb(255, 0, 0);">红色：</label>
+                    <input type="range" id="red" min="0" max="255" value="90"><br>
+
+                    <label for="green" style="color: rgb(0, 255, 0);">绿色：</label>
+                    <input type="range" id="green" min="0" max="255" value="0"><br>
+
+                    <label for="blue" style="color: rgb(0, 0, 255);">蓝色：</label>
+                    <input type="range" id="blue" min="0" max="255" value="0"><br>
+
+                    <label for="alpha">透明：</label>
+                    <input type="range" id="alpha" min="0" max="1" step="0.001" value="1"><br>
+
+                    <label for="pencilSize">粗细：</label>
+                    <input type="range" id="pencilSize" min="1" max="100" value="2">
+                </div>
             </div>
             <button class="saveimgbtn" onclick="togglesaveimgSidebar()"><img src="img/icon/saveimg.png" style="height: 16px;">.&nbsp;&nbsp;保存</button>
             <button class="clearcanvasbtn" onclick="togglealertsSidebar()"><img src="img/icon/dustbin.png" style="height: 16px;">.&nbsp;&nbsp;清除画布</button>
@@ -124,10 +132,10 @@
             }
 
             var sidebar = document.getElementById("ColorChooser");
-            if (sidebar.style.height === "90px") {
+            if (sidebar.style.height === "111px") {
                 sidebar.style.height = "26px";
             } else {
-                sidebar.style.height = "90px";
+                sidebar.style.height = "111px";
             }
         }
 
@@ -170,16 +178,19 @@
                 document.getElementById("red").value = "200";
                 document.getElementById("green").value = "0";
                 document.getElementById("blue").value = "0";
+                document.getElementById("alpha").value = "1";
                 document.getElementById("pencilSize").value = "3";
             }else if (tool === 'pencil') {
                 document.getElementById("red").value = "0";
                 document.getElementById("green").value = "0";
                 document.getElementById("blue").value = "0";
+                document.getElementById("alpha").value = "1";
                 document.getElementById("pencilSize").value = "1";
-            } else {
+            } else  if (tool === 'eraser') {
                 document.getElementById("red").value = "255";
                 document.getElementById("green").value = "255";
                 document.getElementById("blue").value = "255";
+                document.getElementById("alpha").value = "1";
                 document.getElementById("pencilSize").value = "10";
             }
             // 更新画笔颜色和颜色选择器背景色
@@ -208,10 +219,11 @@
             var red = document.getElementById("red").value;
             var green = document.getElementById("green").value;
             var blue = document.getElementById("blue").value;
+            var alpha = document.getElementById("alpha").value;
             var pencilSize = document.getElementById("pencilSize").value;
-            ctx.strokeStyle = `rgb(${red}, ${green}, ${blue})`;
+            ctx.strokeStyle = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
             ctx.lineWidth = pencilSize;
-            divElement.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+            divElement.style.backgroundColor = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
         }
 
         // 初始化颜色和铅笔粗细
@@ -226,7 +238,6 @@
         // 监听鼠标移动事件
         canvas.addEventListener("mousemove", function(e) {
             if (!isDrawing) return; // 如果不是在绘制状态则直接返回
-
             // 绘制路径
             ctx.beginPath();
             ctx.moveTo(lastX, lastY); // 将画笔移动到上一个点的位置
@@ -245,7 +256,13 @@
             isDrawing = false;
         });
 
+
+
+
+
+
         function saveimg() {
+            
             // 获取 canvas 元素
             var canvas = document.getElementById("canvas");
 
