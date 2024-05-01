@@ -58,3 +58,33 @@
 .saveimgbtnup:hover {
     background-color: #0363af;
 }
+.QuestionHelperBtn {
+    width: 300px;
+    position: absolute;
+    bottom: 0;
+    font-size: 20px;
+    background-color: #001aff00;
+    color: white;
+    text-align: left; /* 按钮文本居左 */
+    border: none;
+    padding: 0 15px;
+    outline: none;
+}
+/* 按钮悬停样式 */
+.QuestionHelperBtn:hover {
+    background-color: #7777772f;
+}
+.Rightsidebarbtn {
+    width: 300px;
+    font-size: 20px;
+    background-color: #001aff00;
+    color: white;
+    text-align: right; /* 按钮文本居左 */
+    border: none;
+    padding: 10px 15px;
+    outline: none;
+}
+/* 按钮悬停样式 */
+.Rightsidebarbtn:hover {
+    background-color: #7777772f;
+}
