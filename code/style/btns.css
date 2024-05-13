@@ -12,6 +12,10 @@
 .openbtn:hover {
     background-color: #7777772f;
 }
+.openbtn:active {
+    background-color: #001aff00;
+}
+
 .saveimgbtn {
     width: 300px;
     position: absolute;
@@ -28,6 +32,10 @@
 .saveimgbtn:hover {
     background-color: #0363af;
 }
+.saveimgbtn:active {
+    background-color: #064e87;
+}
+
 .clearcanvasbtn {
     width: 300px;
     position: absolute;
@@ -44,6 +52,10 @@
 .clearcanvasbtn:hover {
     background-color: #af0303;
 }
+.clearcanvasbtn:active {
+    background-color: #870606;
+}
+
 .saveimgbtnup {
     width: 300px;
     font-size: 20px;
@@ -58,6 +70,10 @@
 .saveimgbtnup:hover {
     background-color: #0363af;
 }
+.saveimgbtnup:active {
+    background-color: #064e87;
+}
+
 .QuestionHelperBtn {
     width: 300px;
     position: absolute;
@@ -74,6 +90,10 @@
 .QuestionHelperBtn:hover {
     background-color: #7777772f;
 }
+.QuestionHelperBtn:active {
+    background-color: #001aff00;
+}
+
 .Rightsidebarbtn {
     width: 300px;
     font-size: 20px;
@@ -87,4 +107,41 @@
 /* 按钮悬停样式 */
 .Rightsidebarbtn:hover {
     background-color: #7777772f;
+}
+.Rightsidebarbtn:active {
+    background-color: #001aff00;
+}
+
+.Anchors-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    height: 135px;
+    width: 100%;
+}
+.Anchors-btn {
+    background-color: #f1f1f1;
+    border: 1px solid #bbbbbb;
+    color: #8a8a8a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    height: 100%;
+    width: 100%;
+}
+.Anchors-btn:hover {
+    background-color: #dbdbdb;
+    border: 1px solid #bbbbbb;
+    color: #8a8a8a;
+}
+.Anchors-btn:active {
+    background-color: #f1f1f1;
+    border: 1px solid #bbbbbb;
+    color: #8a8a8a;
+}
+.Anchors-btn.active {
+    background-color: #bbbbbb;
+    border: 1px solid #bbbbbb;
+    color: #f1f1f1;
 }
