@@ -85,6 +85,23 @@
 
             <input type="file" id="imgInput" style="display: none;" accept="image/*"  id="imageUpload" onchange="handleImageUpload(event)">
             <button class="saveimgbtn" onclick="document.getElementById('imgInput').click();" style="bottom: 45px;"><img src="img/icon/loadimg.png" style="height: 16px;">.&nbsp;&nbsp;导入图像</button>
+
+            <script>
+            function handleImageUpload(event) {
+                var canvas = document.getElementById("canvas");
+                var ctx = canvas.getContext("2d");
+                var img = new Image();
+    
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                };
+    
+                img.src = URL.createObjectURL(event.target.files[0]);
+            }
+            </script>
+
             <button class="QuestionHelperBtn" onclick="toggleQuestionHelperSidebar()" style="bottom: 135px;"><img src="img/icon/QuestionHelper.png" style="height: 16px;">.&nbsp;&nbsp;问题助手</button>
 
             <button class="openbtn" onclick="undo()">◁ .&nbsp;&nbsp;撤销</button>
@@ -105,6 +122,61 @@
             <button class="saveimgbtn" onclick="changeCanvasSize(),toggleChangeCanvasSizeSidebar()" style="bottom: 45px;">⊞.&nbsp;&nbsp;修改画布大小</button>
             <input class="input" id="newWidth" placeholder="调整宽(px)">
             <input class="input" id="newHeight" placeholder="调整高(px)">
+
+            <p>&nbsp;&nbsp;&nbsp;⦿&nbsp;内容停靠锚点 (没有完成)</p>
+
+            <div class="Anchors-container">
+                <button class="Anchors-btn Anchors-top-left" title="内容在左上角">↖</button>
+                <button class="Anchors-btn Anchors-top" title="内容在上面">↑</button>
+                <button class="Anchors-btn Anchors-top-right" title="内容在右上角">↗</button>
+                <button class="Anchors-btn Anchors-left" title="内容在左边">←</button>
+                <button class="Anchors-btn Anchors-center" title="内容在中心">⊙</button>
+                <button class="Anchors-btn Anchors-right" title="内容在右边">→</button>
+                <button class="Anchors-btn Anchors-bottom-left" title="内容在左下角">↙</button>
+                <button class="Anchors-btn Anchors-bottom" title="内容在下面">↓</button>
+                <button class="Anchors-btn Anchors-bottom-right" title="内容在右下角">↘</button>
+            </div>
+
+            <script>
+            var buttons = document.getElementsByClassName("Anchors-btn");
+                for (var i = 0; i < buttons.length; i++) {
+                    buttons[i].addEventListener("click", function() {
+                        // 首先移除所有按钮的 active 类
+                        for (var j = 0; j < buttons.length; j++) {
+                            buttons[j].classList.remove("active");
+                        }
+                        this.classList.toggle("active");
+                    });
+                }
+
+
+            function changeCanvasSize() {
+                var newWidth = document.getElementById("newWidth").value; // 从输入框获取新宽度
+                var newHeight = document.getElementById("newHeight").value; // 从输入框获取新高度
+
+                if (newWidth.trim() === "") {
+                    newWidth = "800";
+                }
+                if (newHeight.trim() === "") {
+                    newHeight = "600";
+                }
+
+                if (newWidth && newHeight) {
+                    // 获取当前画布内容
+                    var canvas = document.getElementById("canvas");
+                    var ctx = canvas.getContext("2d");
+                    var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+                    // 修改画布大小
+                    canvas.width = parseInt(newWidth);
+                    canvas.height = parseInt(newHeight);
+
+                    // 重新绘制之前保存的内容
+                    ctx.putImageData(imageData, 0, 0);//内容在左上角
+                }
+            }
+            </script>
+            
         </div>
     </div>
 
@@ -130,10 +202,10 @@
             <select id="formatSelect" class="saveimgbtnup">
                 <option value="bmp">BMP&nbsp;(Windows 位图图像)</option>
                 <option value="ico">ICO&nbsp;(图标)</option>
-                <option value="jpg">JPG&nbsp;(JPEG 图像)</option>
-                <option value="png">PNG&nbsp;(PNG 图像)</option>
-                <option value="webp">WEBP&nbsp;(网页图像)</option>
-                <option value="gif">GIF&nbsp;(动态图像)</option>
+                <option value="jpg">JPG&nbsp;(联合图像专家组)</option>
+                <option value="png">PNG&nbsp;(便携式网络图形)</option>
+                <option value="webp">WEBP&nbsp;(网页图片)</option>
+                <option value="gif">GIF&nbsp;(图形交换格式)</option>
             </select>
         </div>
     </div>
@@ -396,46 +468,6 @@
                     ctx.drawImage(img, 0, 0);
                 };
             }
-        }
-
-        function changeCanvasSize() {
-            var newWidth = document.getElementById("newWidth").value; // 从输入框获取新宽度
-            var newHeight = document.getElementById("newHeight").value; // 从输入框获取新高度
-
-            if (newWidth.trim() === "") {
-                newWidth = "800";
-            }
-            if (newHeight.trim() === "") {
-                newHeight = "600";
-            }
-
-            if (newWidth && newHeight) {
-                // 获取当前画布内容
-                var canvas = document.getElementById("canvas");
-                var ctx = canvas.getContext("2d");
-                var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-                // 修改画布大小
-                canvas.width = parseInt(newWidth);
-                canvas.height = parseInt(newHeight);
-
-                // 重新绘制之前保存的内容
-                ctx.putImageData(imageData, 0, 0);
-            }
-        }
-
-        function handleImageUpload(event) {
-            var canvas = document.getElementById("canvas");
-            var ctx = canvas.getContext("2d");
-            var img = new Image();
-    
-            img.onload = function() {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-            };
-    
-            img.src = URL.createObjectURL(event.target.files[0]);
         }
 
 
