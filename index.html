@@ -104,8 +104,10 @@
 
             <button class="QuestionHelperBtn" onclick="toggleQuestionHelperSidebar()" style="bottom: 135px;"><img src="img/icon/QuestionHelper.png" style="height: 16px;">.&nbsp;&nbsp;问题助手</button>
 
-            <button class="openbtn" onclick="undo()">◁ .&nbsp;&nbsp;撤销</button>
-            <button class="openbtn" onclick="redo()">▷ .&nbsp;&nbsp;重做</button>
+            <div>
+                <button class="openbtn" onclick="undo()" style="float: left; width: 50%;">◁ .&nbsp;&nbsp;撤销</button>
+                <button class="openbtn" onclick="redo()" style="float: left; width: 50%;">&nbsp;&nbsp;重做. ▷</button>
+            </div>
 
             <button class="openbtn" onclick="toggleChangeCanvasSizeSidebar()">⊞.&nbsp;&nbsp;修改画布大小</button>
 
