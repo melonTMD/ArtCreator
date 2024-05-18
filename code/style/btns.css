@@ -13,7 +13,7 @@
     background-color: #7777772f;
 }
 .openbtn:active {
-    background-color: #001aff00;
+    background-color: #77777746;
 }
 
 .saveimgbtn {
@@ -33,7 +33,7 @@
     background-color: #0363af;
 }
 .saveimgbtn:active {
-    background-color: #064e87;
+    background-color: #0472cc;
 }
 
 .clearcanvasbtn {
@@ -53,7 +53,7 @@
     background-color: #af0303;
 }
 .clearcanvasbtn:active {
-    background-color: #870606;
+    background-color: #ce0404;
 }
 
 .saveimgbtnup {
@@ -71,7 +71,7 @@
     background-color: #0363af;
 }
 .saveimgbtnup:active {
-    background-color: #064e87;
+    background-color: #0472cc;
 }
 
 .QuestionHelperBtn {
@@ -91,7 +91,7 @@
     background-color: #7777772f;
 }
 .QuestionHelperBtn:active {
-    background-color: #001aff00;
+    background-color: #77777746;
 }
 
 .Rightsidebarbtn {
@@ -109,7 +109,7 @@
     background-color: #7777772f;
 }
 .Rightsidebarbtn:active {
-    background-color: #001aff00;
+    background-color: #77777746;
 }
 
 .Anchors-container {
