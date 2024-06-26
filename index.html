@@ -7,7 +7,8 @@
     <title>艺术创建者</title>
     <link rel="stylesheet" type="text/css" href="code/style/btns.css">
     <link rel="stylesheet" type="text/css" href="code/style/sidebar.css">
-    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" type="text/css" href="code/style/start.css">
+    <link rel="icon" type="image/png" href="img/favicon/favicon.png">
     <style>
         body {
             background-image: url('img/background.jpg');
@@ -64,6 +65,20 @@
     </style>
 </head>
 <body oncontextmenu="return false;">
+
+<div class="StartMenu" id="StartMenu">
+    <img src="img/favicon/faviconInSide.png" class="faviconInSide">
+</div>
+
+<script>
+window.addEventListener('load', function () {
+    setTimeout(function () {
+        const StartMenu = document.getElementById('StartMenu');
+        StartMenu.style.animationPlayState = 'running';
+    }, 500);
+});
+</script>
+
     <div class="sidebar" id="sidebar">
         <div class="sidebarthings">
             <button class="openbtn" onclick="toggleSidebar()">☰.&nbsp;&nbsp;设置</button>
@@ -525,7 +540,6 @@
         
 // 绘制助手
 window.onload = function() {
-    toggleRightsidebar();
     saytouser("你好，我是绘制助手，你可以问我任何事！");
 };
 
