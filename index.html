@@ -206,7 +206,7 @@ window.addEventListener('load', function () {
         <div class="sidebarthings">
             <p>&nbsp;&nbsp;&nbsp;⦿&nbsp;疑难解答</p>
             <p>&nbsp;&nbsp;撤销:&nbsp;Ctrl+Z/ArrowLeft</p>
-            <p>&nbsp;&nbsp;重做:&nbsp;Ctrl+Z/ArrowRight</p>
+            <p>&nbsp;&nbsp;重做:&nbsp;Ctrl+Y/ArrowRight</p>
             <p>&nbsp;&nbsp;红色马克笔:&nbsp;Ctrl+R</p>
             <p>&nbsp;&nbsp;铅笔:&nbsp;Ctrl+P</p>
             <p>&nbsp;&nbsp;橡皮擦:&nbsp;Ctrl+E</p>
@@ -505,7 +505,7 @@ window.addEventListener('load', function () {
         });
 
         document.addEventListener("keydown", function(event) {
-            if ((event.ctrlKey && event.key === "r") || (event.ctrlKey && event.key === "ArrowLeft")) {
+            if ((event.ctrlKey && event.key === "y") || (event.ctrlKey && event.key === "ArrowRight")) {
                 redo();
             }
         });
